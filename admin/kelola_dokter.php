@@ -45,7 +45,7 @@ if (isset($_POST['tambah_dokter'])) {
 // ==========================================
 // AMBIL SEMUA DATA DOKTER & JADWAL UNTUK DITAMPILKAN DI TABEL
 // ==========================================
-$query_tampil = "SELECT jd.id_jadwal, u.nama_lengkap, jd.hari, jd.jam_mulai, jd.jam_selesai 
+$query_tampil = "SELECT jd.id_jadwal, jd.id_dokter, u.nama_lengkap, jd.hari, jd.jam_mulai, jd.jam_selesai 
                  FROM jadwal_dokter jd
                  JOIN users u ON jd.id_dokter = u.id_user 
                  WHERE u.role = 'dokter'";
@@ -150,6 +150,7 @@ $result_tampil = mysqli_query($koneksi, $query_tampil);
                                         <th class="py-3 px-4">Nama Dokter</th>
                                         <th>Hari Praktik</th>
                                         <th>Jam Praktik</th>
+                                        <th class="text-center">Aksi</th> <!-- Kolom Aksi Ditambahkan -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -159,11 +160,17 @@ $result_tampil = mysqli_query($koneksi, $query_tampil);
                                                 <td class="px-4 fw-semibold"><?php echo $row['nama_lengkap']; ?></td>
                                                 <td><span class="badge bg-info text-white"><?php echo $row['hari']; ?></span></td>
                                                 <td><?php echo $row['jam_mulai'] . " - " . $row['jam_selesai']; ?> WIB</td>
+                                                <td class="text-center">
+                                                    <!-- Tombol Hapus dengan konfirmasi -->
+                                                    <a href="hapus_dokter.php?id_jadwal=<?php echo $row['id_jadwal']; ?>&id_user=<?php echo $row['id_dokter']; ?>" 
+                                                       class="btn btn-danger btn-sm fw-semibold" 
+                                                       onclick="return confirm('Yakin ingin menghapus dokter ini?')">Hapus</a>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                     <?php } else { ?>
                                         <tr>
-                                            <td colspan="3" class="text-center py-5 text-muted">Belum ada data dokter yang diinput.</td>
+                                            <td colspan="4" class="text-center py-5 text-muted">Belum ada data dokter yang diinput.</td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
